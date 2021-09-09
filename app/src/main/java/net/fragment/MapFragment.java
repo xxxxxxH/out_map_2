@@ -32,8 +32,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import net.basicmodel.R;
+import net.entity.ResourceEntity;
+import net.utils.ResourceManager;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,6 +71,7 @@ public class MapFragment extends Fragment implements View.OnClickListener, OnMap
         ButterKnife.bind(this, view);
         initMap(savedInstanceState);
         initView();
+        ArrayList<ResourceEntity> list = ResourceManager.getInstance().getAllResource(getActivity());
     }
 
     private void initMap(Bundle savedInstanceState) {
