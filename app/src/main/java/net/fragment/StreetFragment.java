@@ -31,11 +31,11 @@ import net.basicmodel.R;
 
 import org.jetbrains.annotations.NotNull;
 
-public class StreetFragment extends Fragment{
+public class StreetFragment extends Fragment {
 
     LatLng sydeny = new LatLng(-33.87365, 151.20689);
-     StreetViewPanorama mStreetViewPanorama = null;
-     Marker marker = null;
+    StreetViewPanorama mStreetViewPanorama = null;
+    Marker marker = null;
     LatLng markerPosition = null;
 
     @Override
@@ -52,61 +52,66 @@ public class StreetFragment extends Fragment{
     @SuppressLint("MissingPermission")
     private void initView() {
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         if (location != null) {
             markerPosition = new LatLng(location.getLatitude(), location.getLongitude());
         } else {
             markerPosition = sydeny;
         }
         SupportStreetViewPanoramaFragment panoramaFragment = (SupportStreetViewPanoramaFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.streetviewpanorama);
-        panoramaFragment.getStreetViewPanoramaAsync(new OnStreetViewPanoramaReadyCallback() {
-            @Override
-            public void onStreetViewPanoramaReady(@NonNull @NotNull StreetViewPanorama streetViewPanorama) {
-                mStreetViewPanorama = streetViewPanorama;
-                mStreetViewPanorama.setOnStreetViewPanoramaChangeListener(new StreetViewPanorama.OnStreetViewPanoramaChangeListener() {
-                    @Override
-                    public void onStreetViewPanoramaChange(StreetViewPanoramaLocation streetViewPanoramaLocation) {
-                        if (streetViewPanoramaLocation != null) {
-                            marker.setPosition(streetViewPanoramaLocation.position);
+        if (panoramaFragment != null) {
+            panoramaFragment.getStreetViewPanoramaAsync(new OnStreetViewPanoramaReadyCallback() {
+                @Override
+                public void onStreetViewPanoramaReady(@NonNull @NotNull StreetViewPanorama streetViewPanorama) {
+                    mStreetViewPanorama = streetViewPanorama;
+                    mStreetViewPanorama.setOnStreetViewPanoramaChangeListener(new StreetViewPanorama.OnStreetViewPanoramaChangeListener() {
+                        @Override
+                        public void onStreetViewPanoramaChange(StreetViewPanoramaLocation streetViewPanoramaLocation) {
+                            if (streetViewPanoramaLocation != null) {
+                                marker.setPosition(streetViewPanoramaLocation.position);
+                            }
                         }
-                    }
-                });
-                mStreetViewPanorama.setPosition(markerPosition);
-            }
-        });
+                    });
+                    mStreetViewPanorama.setPosition(markerPosition);
+                }
+            });
+        }
+
         SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.mapstreet);
-        mapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(@NonNull @NotNull GoogleMap googleMap) {
-                googleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
-                    @Override
-                    public void onMarkerDragStart(@NonNull @NotNull Marker marker) {
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(@NonNull @NotNull GoogleMap googleMap) {
+                    googleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+                        @Override
+                        public void onMarkerDragStart(@NonNull @NotNull Marker marker) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onMarkerDrag(@NonNull @NotNull Marker marker) {
+                        @Override
+                        public void onMarkerDrag(@NonNull @NotNull Marker marker) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onMarkerDragEnd(@NonNull @NotNull Marker marker) {
-                        mStreetViewPanorama.setPosition(marker.getPosition(), 150);
-                    }
-                });
-                googleMap.moveCamera(getPosition(markerPosition.latitude, markerPosition.longitude));
-                marker = googleMap.addMarker(getMarkerOptions(markerPosition.latitude,markerPosition.longitude));
+                        @Override
+                        public void onMarkerDragEnd(@NonNull @NotNull Marker marker) {
+                            mStreetViewPanorama.setPosition(marker.getPosition(), 150);
+                        }
+                    });
+                    googleMap.moveCamera(getPosition(markerPosition.latitude, markerPosition.longitude));
+                    marker = googleMap.addMarker(getMarkerOptions(markerPosition.latitude, markerPosition.longitude));
 
-                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                    @Override
-                    public void onMapClick(@NonNull @NotNull LatLng latLng) {
-                        googleMap.clear();
-                        marker = googleMap.addMarker(getMarkerOptions(latLng.latitude,latLng.longitude));
-                        mStreetViewPanorama.setPosition(latLng);
-                    }
-                });
-            }
-        });
+                    googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                        @Override
+                        public void onMapClick(@NonNull @NotNull LatLng latLng) {
+                            googleMap.clear();
+                            marker = googleMap.addMarker(getMarkerOptions(latLng.latitude, latLng.longitude));
+                            mStreetViewPanorama.setPosition(latLng);
+                        }
+                    });
+                }
+            });
+        }
 
 
     }
@@ -121,7 +126,7 @@ public class StreetFragment extends Fragment{
     }
 
     private MarkerOptions getMarkerOptions(double la, double lo) {
-        return new MarkerOptions().position(new LatLng(la,lo)).icon(BitmapDescriptorFactory.fromResource(R.mipmap.location)).draggable(true);
+        return new MarkerOptions().position(new LatLng(la, lo)).icon(BitmapDescriptorFactory.fromResource(R.mipmap.location)).draggable(true);
     }
 
 }
