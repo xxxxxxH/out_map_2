@@ -2,6 +2,7 @@ package net.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,6 @@ public class InterFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         initData();
-        initView();
     }
 
     private void initData() {
@@ -63,6 +63,7 @@ public class InterFragment extends Fragment {
                 try {
                     String result = response.body().string();
                     data = NetUtils.get(result);
+                    initView();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -70,6 +71,7 @@ public class InterFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.i("xxxxxxH","onFailure = " + t.toString());
             }
         });
     }

@@ -100,7 +100,7 @@ public class NetUtils {
 
                 } else {
                     entity.setImageUrl("https://geo0.ggpht.com/cbk?output=thumbnail&thumb=2&panoid=" + jsonObject1
-                            .getString("panoid") + "/w400-h300-fo90-ya0-pi0/");
+                            .getString("panoid"));
                 }
                 result.add(entity);
             }

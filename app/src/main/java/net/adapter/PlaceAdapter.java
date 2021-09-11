@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -40,7 +41,7 @@ public class PlaceAdapter extends BaseQuickAdapter<DataEntity, BaseViewHolder> {
     protected void convert(@NotNull BaseViewHolder baseViewHolder, DataEntity dataEntity) {
         ImageView bg = baseViewHolder.getView(R.id.img);
         TextView title = baseViewHolder.getView(R.id.img_name);
-        LinearLayout root = baseViewHolder.getView(R.id.root);
+        RelativeLayout root = baseViewHolder.getView(R.id.root);
         ViewGroup.LayoutParams p = root.getLayoutParams();
         if (type.equals("big")) {
             p.height = ScreenUtils.getScreenSize(activity)[0] / 3;

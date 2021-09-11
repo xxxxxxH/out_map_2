@@ -19,7 +19,7 @@
                 android:id="@+id/collapsing"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
-                android:minHeight="?attr/actionBarSize"
+                android:minHeight="200dp"
                 app:collapsedTitleGravity="center"
                 app:contentScrim="#80000000"
                 app:elevation="0dp"

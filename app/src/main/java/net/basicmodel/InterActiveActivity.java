@@ -67,7 +67,7 @@ public class InterActiveActivity extends AppCompatActivity {
         setContentView(R.layout.layout_activity_inter);
         ButterKnife.bind(this);
         initData();
-        initView();
+//        initView();
         initMap(savedInstanceState);
     }
 
@@ -106,12 +106,17 @@ public class InterActiveActivity extends AppCompatActivity {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                StreetViewPanoramaCamera camera = StreetViewPanoramaCamera.builder()
-                        .zoom(mStreetViewPanorama.getPanoramaCamera().zoom)
-                        .tilt(mStreetViewPanorama.getPanoramaCamera().tilt)
-                        .bearing(mStreetViewPanorama.getPanoramaCamera().bearing + 60)
-                        .build();
-                mStreetViewPanorama.animateTo(camera, 5000);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        StreetViewPanoramaCamera camera = StreetViewPanoramaCamera.builder()
+                                .zoom(mStreetViewPanorama.getPanoramaCamera().zoom)
+                                .tilt(mStreetViewPanorama.getPanoramaCamera().tilt)
+                                .bearing(mStreetViewPanorama.getPanoramaCamera().bearing + 60)
+                                .build();
+                        mStreetViewPanorama.animateTo(camera, 5000);
+                    }
+                });
             }
         };
         timer = new Timer();
@@ -129,6 +134,7 @@ public class InterActiveActivity extends AppCompatActivity {
                 try {
                     String result = response.body().string();
                     data = NetUtils.getSmall(entity, result);
+                    initView();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -157,7 +163,7 @@ public class InterActiveActivity extends AppCompatActivity {
                     if (entity.getFife()) {
                         mStreetViewPanorama.setPosition("F:" + dataEntity.getPannoId());
                     } else {
-                        mStreetViewPanorama.setPosition(dataEntity.getPanoid());
+                        mStreetViewPanorama.setPosition(dataEntity.getPannoId());
                     }
                 }
             }

@@ -17,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
@@ -99,19 +101,25 @@ public class MapFragment extends Fragment implements View.OnClickListener, OnMap
         int id = view.getId();
         switch (id) {
             case R.id.search:
-
+                try {
+                    startActivityForResult(new PlacePicker.IntentBuilder().build(getActivity()),1);
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.mapNormal:
-
+                mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 break;
             case R.id.mapHybrid:
-
+                mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 break;
             case R.id.mapSat:
-
+                mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
                 break;
             case R.id.mapTer:
-
+                mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
                 break;
         }
     }
